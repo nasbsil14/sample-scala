@@ -29,14 +29,26 @@ lazy val sharedSettings = Seq(
 
 
 // code generation task that calls the customized code generator
-lazy val slick = taskKey[Seq[File]]("gen-tables")
+lazy val slick = taskKey[Seq[File]]("generate tables task")
 lazy val slickCodeGenTask = Def.task {
   val dir = sourceManaged.value
   val cp = (dependencyClasspath in Compile).value
   val r = (runner in Compile).value
   val s = streams.value
+
+  import com.typesafe.config.{ConfigFactory, Config}
+  val config = ConfigFactory.parseFile(new File("src/main/resources/application.conf"))
+  val jdbcDriver = config.getString("mysql.driver")
+  val url = config.getString("mysql.url")
+  val user = config.getString("mysql.user")
+  val password = config.getString("mysql.password")
+  val pkg = config.getString("codegen.pkg")
   val outputDir = (dir / "slick").getPath // place generated files in sbt's managed sources folder
-  r.run("codegen.CustomizedCodeGenerator", cp.files, Array(outputDir), s.log).failed foreach (sys error _.getMessage)
+
+  r.run("codegen.CustomizedCodeGenerator", cp.files, Array(jdbcDriver, url, user, password, outputDir, pkg), s.log).failed foreach (sys error _.getMessage)
   val fname = outputDir + "/db/Tables.scala"
   Seq(file(fname))
 }
+
+
+
