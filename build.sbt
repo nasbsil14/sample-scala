@@ -21,7 +21,8 @@ lazy val codegen = project
 lazy val sharedSettings = Seq(
   scalacOptions := Seq("-feature", "-unchecked", "-deprecation"),
   libraryDependencies ++= Seq(
-    "mysql" % "mysql-connector-java" % "6.0.6",
+    "mysql" % "mysql-connector-java" % "5.1.45",
+//    "mysql" % "mysql-connector-java" % "6.0.6",
     "com.typesafe.slick" %% "slick" % "3.2.0",
     "org.slf4j" % "slf4j-nop" % "1.6.4"
   )

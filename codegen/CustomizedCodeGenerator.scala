@@ -8,6 +8,7 @@ import scala.concurrent.duration._
 
 object CustomizedCodeGenerator {
   def main(args: Array[String]): Unit = {
+    println("codegen START")
 
     val jdbcDriver = args(0)
     val url = args(1)
@@ -35,7 +36,9 @@ object CustomizedCodeGenerator {
         "Tables",
         "Tables.scala"
       )),
-      20.seconds
+      10.seconds
     )
+
+    println("END")
   }
 }
