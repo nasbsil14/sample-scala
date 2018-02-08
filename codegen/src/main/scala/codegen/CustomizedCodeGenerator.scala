@@ -14,14 +14,16 @@ object CustomizedCodeGenerator {
     val url = args(1)
     val user = args(2)
     val password = args(3)
+    val output = args(4)
+    val pkg = args(5)
 
     val driver = MySQLProfile
     val db = driver.api.Database.forURL(url, user, password, driver=jdbcDriver)
     // filter out desired tables
     val included = Seq("Users")
     val codegen = db.run{
-      // driver.defaultTables.flatMap( driver.createModelBuilder(_,false).buildModel )
-      driver.defaultTables.map(_.filter(t => included contains t.name.name)).flatMap( driver.createModelBuilder(_,false).buildModel )
+      driver.defaultTables.flatMap( driver.createModelBuilder(_,false).buildModel )
+      // driver.defaultTables.map(_.filter(t => included contains t.name.name)).flatMap( driver.createModelBuilder(_,false).buildModel )
     }.map { model =>
       new slick.codegen.SourceCodeGenerator(model) {
         println(model)
@@ -29,13 +31,15 @@ object CustomizedCodeGenerator {
     }
 
     Await.ready(
-      codegen.map(_.writeToFile(
-        "slick.jdbc.MySQLProfile",
-        args(4),
-        args(5),
-        "Tables",
-        "Tables.scala"
-      )),
+      codegen.map(generator => {
+        generator.writeToFile(
+          "slick.jdbc.MySQLProfile",
+          output,
+          pkg,
+          "Tables",
+          generator.tableName + ".scala"
+        )
+      }),
       10.seconds
     )
 
