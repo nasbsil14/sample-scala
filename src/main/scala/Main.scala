@@ -1,20 +1,10 @@
-import slick.jdbc.MySQLProfile
-
-import scala.concurrent.Await
-import scala.concurrent.duration._
-import scala.language.postfixOps
-import scala.concurrent.ExecutionContext.Implicits.global
-
-import db.test.Tables._
-import db.test.Tables.profile.api._
+import service.UsersService
 
 object Main extends App {
-  val db = MySQLProfile.api.Database.forConfig("mysql")
+  println("main START")
 
-  val q = Users.to[List]
+  val list = UsersService.list()
+  list.foreach(println)
 
-  Await.result(db.run(q.result).map { result =>
-    println(result.mkString("\n"))
-  }, 10 seconds)
-
+  println("END")
 }
