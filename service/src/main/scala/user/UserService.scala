@@ -5,7 +5,7 @@ import scala.language.postfixOps
 import model.UserModel
 import repository.UsersRepository
 
-trait UsersService {
+trait UserService {
   import scala.concurrent.ExecutionContext.Implicits.global
   def get(id: Int): Future[UserModel] = {
     UsersRepository.getById(id).map {
@@ -20,4 +20,4 @@ trait UsersService {
       result.map(row => UserModel(Some(row.userid), row.name))}
   }
 }
-object UsersService extends UsersService
+object UserService extends UserService
