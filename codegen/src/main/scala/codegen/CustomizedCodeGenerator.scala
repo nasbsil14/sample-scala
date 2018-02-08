@@ -20,8 +20,8 @@ object CustomizedCodeGenerator {
     // filter out desired tables
     val included = Seq("Users")
     val codegen = db.run{
-      driver.defaultTables.flatMap( driver.createModelBuilder(_,false).buildModel )
-      // driver.defaultTables.map(_.filter(t => included contains t.name.name)).flatMap( driver.createModelBuilder(_,false).buildModel )
+      // driver.defaultTables.flatMap( driver.createModelBuilder(_,false).buildModel )
+      driver.defaultTables.map(_.filter(t => included contains t.name.name)).flatMap( driver.createModelBuilder(_,false).buildModel )
     }.map { model =>
       new slick.codegen.SourceCodeGenerator(model) {
         println(model)
