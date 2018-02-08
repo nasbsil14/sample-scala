@@ -2,8 +2,11 @@ package user
 
 import scala.concurrent.Future
 import scala.language.postfixOps
+import model.UserModel
+import repository.UsersRepository
 
 trait UsersService {
+  import scala.concurrent.ExecutionContext.Implicits.global
   def get(id: Int): Future[UserModel] = {
     UsersRepository.getById(id).map {
       {

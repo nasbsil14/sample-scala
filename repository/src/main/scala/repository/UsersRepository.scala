@@ -1,5 +1,8 @@
 package repository
 
+import db.test.Tables._
+import db.test.Tables.profile.api._
+
 import scala.concurrent.Future
 
 trait UsersRepository {
