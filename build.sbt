@@ -30,9 +30,11 @@ lazy val sharedSettings = Seq(
 
 
 // code generation task that calls the customized code generator
+// sourceManaged in Compile := file((sourceDirectory in Compile).value.getAbsolutePath + "/src_managed")
 lazy val slick = taskKey[Seq[File]]("generate tables task")
 lazy val slickCodeGenTask = Def.task {
-  val dir = sourceManaged.value
+  //val dir = sourceManaged.value
+  val dir = (sourceDirectory in Compile).value
   val cp = (dependencyClasspath in Compile).value
   val r = (runner in Compile).value
   val s = streams.value
@@ -44,10 +46,10 @@ lazy val slickCodeGenTask = Def.task {
   val user = config.getString("mysql.user")
   val password = config.getString("mysql.password")
   val pkg = config.getString("codegen.pkg")
-  val outputDir = (dir / "slick").getPath // place generated files in sbt's managed sources folder
+  val outputDir = (dir / "scala").getPath // place generated files in sbt's managed sources folder
 
   r.run("codegen.CustomizedCodeGenerator", cp.files, Array(jdbcDriver, url, user, password, outputDir, pkg), s.log).failed foreach (sys error _.getMessage)
-  val fname = outputDir + "/db/Tables.scala"
+  val fname = outputDir + pkg.replace(".","/") + "/Tables.scala"
   Seq(file(fname))
 }
 

@@ -26,7 +26,7 @@ object CustomizedCodeGenerator {
       // driver.defaultTables.map(_.filter(t => included contains t.name.name)).flatMap( driver.createModelBuilder(_,false).buildModel )
     }.map { model =>
       new slick.codegen.SourceCodeGenerator(model) {
-        println(model)
+        model.tables.foreach(table => println(table.name.table))
       }
     }
 
@@ -36,8 +36,8 @@ object CustomizedCodeGenerator {
           "slick.jdbc.MySQLProfile",
           output,
           pkg,
-          "Tables",
-          generator.tableName + ".scala"
+          "Tables", // container objects name
+          "Tables.scala"
         )
       }),
       10.seconds
