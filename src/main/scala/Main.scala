@@ -1,5 +1,5 @@
 
-import user.UserService
+import service.UserService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 object Main extends App {

@@ -6,7 +6,7 @@ scalaVersion := "2.12.4"
 
 lazy val root = (project in file("."))
   .settings(sharedSettings)
-  .dependsOn(core, codegen, repository, service)
+  .dependsOn(core, repository, service)
 
 lazy val sharedSettings = Seq(
   scalacOptions := Seq("-feature", "-unchecked", "-deprecation"),
@@ -20,13 +20,13 @@ lazy val sharedSettings = Seq(
 lazy val core = project
   .settings(sharedSettings)
 
-lazy val repository = project
-  .settings(sharedSettings)
-  .dependsOn(codegen)
-
 lazy val service = project
   .settings(sharedSettings)
   .dependsOn(repository)
+
+lazy val repository = project
+  .settings(sharedSettings)
+  .dependsOn(codegen)
 
 lazy val codegen = project
   .settings(sharedSettings)

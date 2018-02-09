@@ -1,4 +1,4 @@
-package user
+package service
 
 import scala.concurrent.Future
 import scala.language.postfixOps

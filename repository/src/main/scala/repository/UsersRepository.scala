@@ -40,5 +40,4 @@ trait UsersRepository {
   def delete(id: Int): Future[Int] = db.run { Users.filter(_.userid === id).delete }
 
 }
-
 object UsersRepository extends UsersRepository
