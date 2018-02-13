@@ -24,12 +24,12 @@ object Main extends App {
           println(data.get)
           writer.write(data.get.val3 + "," + data.get.val2 + "," + data.get.val1 + "\n")
         })
-        //      var writer = Files.newBufferedWriter(Paths.get("/Users/b08455/Desktop/20180131_BL_users.csv"))
+        //      var writer = Files.newBufferedWriter(Paths.get(path.getParent + "/out.csv"))
         //      lines.zipWithIndex.foreach {
         //        case (s: String, i: Int) => {
         //          if (0 < i && i % 1000 == 0) {
         //            writer.flush()
-        //            writer = Files.newBufferedWriter(Paths.get("/Users/b08455/Desktop/20180206_BLuser_id" + (i / 1000) + ".txt"))
+        //            writer = Files.newBufferedWriter(Paths.get(path.getParent + "/out%d.txt".format((i / 1000))))
         //          }
         //          writer.write(s + ",")
         //        }
