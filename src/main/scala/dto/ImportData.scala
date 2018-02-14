@@ -13,6 +13,7 @@ case class ImportData (
                       currentCount: String,
                       useCharge: String,
                       fee: String,
+                      rate: String,
                       other: String,
                       monthCharge: String,
                       carriedForwardBalance: String

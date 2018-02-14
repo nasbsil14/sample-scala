@@ -14,6 +14,7 @@ case class OricoDetail(
                   CurrentCount: Int,
                   UseCharge: Int,
                   Fee: Int,
+                  rate: Float,
                   Other: String,
                   MonthCharge: Int,
                   CarriedForwardBalance: Int,
