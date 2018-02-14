@@ -7,9 +7,13 @@ case class ImportData (
                       suppliersInfo: String,
                       oldNew: String,
                       user: String,
-                      startDate: String,
+                      payStartDate: String,
                       payClass: String,
                       payCount: String,
                       currentCount: String,
-                      price: String,
+                      useCharge: String,
+                      fee: String,
+                      other: String,
+                      monthCharge: String,
+                      carriedForwardBalance: String
                       )

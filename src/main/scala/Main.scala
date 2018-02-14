@@ -1,6 +1,8 @@
 import java.nio.file.{Files, Paths}
 import java.util.stream.Collectors
 
+import dto.ExportData
+
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 
