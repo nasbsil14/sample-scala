@@ -59,6 +59,7 @@ private[repository] trait OricoDetailTable { this: DbAdapter =>
     val currentCount = column[Int]("CurrentCount")
     val useCharge = column[Int]("UseCharge")
     val fee = column[Int]("Fee")
+    val rate = column[Float]("Rate")
     val other = column[String]("Other")
     val monthCharge = column[Int]("MonthCharge")
     val carriedForwardBalance = column[Int]("CarriedForwardBalance")
@@ -69,7 +70,7 @@ private[repository] trait OricoDetailTable { this: DbAdapter =>
     val updateDate = column[Timestamp]("UpdateDate", SqlType("timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"))
 
     def * = (id.?, tranDate, suppliersInfo, oldNew, user, payStartDate, payClass, payCount, currentCount, useCharge
-      , fee, other, monthCharge, carriedForwardBalance, expIgnore, status, registerDate, updateDate) <> (OricoDetail.tupled, OricoDetail.unapply)
+      , fee, rate, other, monthCharge, carriedForwardBalance, expIgnore, status, registerDate, updateDate) <> (OricoDetail.tupled, OricoDetail.unapply)
 
   }
 
