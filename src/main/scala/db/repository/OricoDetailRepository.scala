@@ -46,7 +46,7 @@ object OricoDetailRepository extends OricoDetailRepository with MySQLAdapter
 private[repository] trait OricoDetailTable { this: DbAdapter =>
 
   import driver.api._
-  private[OricoDetailTable] class OricoDetailTable(tag: Tag) extends Table[OricoDetail](tag, "OricoDetail") {
+  private[OricoDetailTable] class OricoDetailTable(tag: Tag) extends Table[OricoDetail](tag, "OricoDetails") {
     val id = column[Int]("Id", O.PrimaryKey, O.AutoInc)
 
     val tranDate = column[String]("TranDate")
