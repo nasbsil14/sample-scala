@@ -26,7 +26,7 @@ object Main extends App {
           case Array(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14) =>
             Some(ImportData(v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14))
           case _ => None
-        }}).filter(_.isDefined).filter(_.get.tranDate != "ご利用日").foreach (println)
+        }}).filter(_.isDefined).filter(op => safeStringToInt(op.get.useCharge).isDefined).foreach (println)
 
 //        val writer = Files.newBufferedWriter(Paths.get(path.getParent + "/out.csv"))
 //        lines.map(s => s.split(",")
@@ -57,6 +57,11 @@ object Main extends App {
     }
 
     println("END")
+  }
+
+  def safeStringToInt(str: String): Option[Int] = {
+    import scala.util.control.Exception._
+    catching(classOf[NumberFormatException]) opt str.replace(",", "").toInt
   }
 }
 
