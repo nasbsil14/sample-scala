@@ -9,7 +9,7 @@ object Main extends App {
 
     val pdDoc: PDDocument = PDDocument.load(Files.newInputStream(Paths.get("/Users/test_user/Desktop/sample.pdf")))
     val stripper: PDFTextStripper = new PDFTextStripper
-    //    val writer = Files.newBufferedWriter(Paths.get("/Users/b08455/Desktop/sample_pdf.txt"))
+    //    val writer = Files.newBufferedWriter(Paths.get("/Users/test_user/Desktop/sample_pdf.txt"))
     try {
       stripper.setStartPage(1)
       stripper.setEndPage(2)
