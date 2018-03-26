@@ -1,6 +1,7 @@
 import java.io.BufferedReader
 import java.nio.file.{Files, Paths}
 
+import db.model.Subjects
 import db.repository.SubjectsRepository
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
@@ -16,10 +17,10 @@ object Main extends App {
     println("START")
 
     if (false) {
-      val pdDoc: PDDocument = PDDocument.load(Files.newInputStream(Paths.get("/Users/nasb/Desktop/sample_pdf.pdf")))
+      val pdDoc: PDDocument = PDDocument.load(Files.newInputStream(Paths.get("/Users/test_user/Desktop/sample_pdf.pdf")))
       val stripper: PDFTextStripper = new PDFTextStripper
 
-      val writer = Files.newBufferedWriter(Paths.get("/Users/nasb/Desktop/sample_pdf.txt"))
+      val writer = Files.newBufferedWriter(Paths.get("/Users/test_user/Desktop/sample_pdf.txt"))
       try {
         stripper.setStartPage(89)
         stripper.setEndPage(96)
@@ -109,5 +110,40 @@ object Main extends App {
         Nil :+ list.head :+ list(1).head :+ list(1).tail :+ list(2) :+ list(3) :+ list(4) :+ list(5)
       })
       .map(_.mkString(","))
+  }
+
+  def importData(): Unit = {
+    val lines = Files.lines(Paths.get("/Users/test_user/Desktop/test.txt")).iterator().asScala.toList
+    lines
+      .map(s => s.split(",").toList)
+      .foreach(list => {
+        val class1: Option[Int] = if (!list(0).isEmpty) Some(list(0).toInt) else None
+        val class2: Option[Int] = if (!list(1).isEmpty) Some(list(1).toInt) else None
+        val class3: Option[Int] = if (!list(2).isEmpty) Some(list(2).toInt) else None
+        val title: String = list(3)
+        val schoolYear: Int = list(4).toInt
+
+        val units: Int = list(6).toInt
+        val memo: String = list.splitAt(7)._2.mkString
+
+        val rgTerm1 = """(.+)・(.+)""".r
+        val rgTerm2 = """(.+)～(.+)""".r
+        list(5).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
+          case rgTerm1(v1, v2) => {
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v1.toInt, units, memo, null, null, null))
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v2.toInt, units, memo, null, null, null))
+          }
+          case rgTerm2(v1, v2) => {
+            (v1.toInt to v2.toInt).foreach(i => {
+              SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, i, units, memo, null, null, null))
+            })
+          }
+          case _ => {
+            val term: Int = list(5).toInt
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, term, units, memo, null, null, null))
+          }
+        }
+      }
+    )
   }
 }
