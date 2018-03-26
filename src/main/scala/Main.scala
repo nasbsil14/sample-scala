@@ -1,5 +1,7 @@
 import java.io.BufferedReader
 import java.nio.file.{Files, Paths}
+import java.sql.Timestamp
+import java.time.LocalDateTime
 
 import db.model.Subjects
 import db.repository.SubjectsRepository
@@ -41,6 +43,8 @@ object Main extends App {
         pdDoc.close()
       }
     }
+
+    this.importData()
 
     val f = SubjectsRepository.getAll()
 //    Await.ready(f, Duration.Inf)
@@ -130,17 +134,21 @@ object Main extends App {
         val rgTerm2 = """(.+)～(.+)""".r
         list(5).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
           case rgTerm1(v1, v2) => {
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v1.toInt, units, memo, null, null, null))
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v2.toInt, units, memo, null, null, null))
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v1.toInt, units, memo
+              , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v2.toInt, units, memo
+              , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
           }
           case rgTerm2(v1, v2) => {
             (v1.toInt to v2.toInt).foreach(i => {
-              SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, i, units, memo, null, null, null))
+              SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, i, units, memo
+                , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
             })
           }
-          case _ => {
-            val term: Int = list(5).toInt
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, term, units, memo, null, null, null))
+          case v => {
+            val term: Int = v.toInt
+            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, term, units, memo
+              , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
           }
         }
       }
