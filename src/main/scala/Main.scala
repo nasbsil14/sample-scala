@@ -1,37 +1,56 @@
 import java.io.BufferedReader
 import java.nio.file.{Files, Paths}
 
+import db.repository.SubjectsRepository
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
+
 import scala.collection.JavaConverters._
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.util.{Failure, Success}
 
 object Main extends App {
   override def main(args: Array[String]): Unit = {
     println("START")
 
-    val pdDoc: PDDocument = PDDocument.load(Files.newInputStream(Paths.get("/Users/nasb/Desktop/sample_pdf.pdf")))
-    val stripper: PDFTextStripper = new PDFTextStripper
+    if (false) {
+      val pdDoc: PDDocument = PDDocument.load(Files.newInputStream(Paths.get("/Users/nasb/Desktop/sample_pdf.pdf")))
+      val stripper: PDFTextStripper = new PDFTextStripper
 
-    val writer = Files.newBufferedWriter(Paths.get("/Users/nasb/Desktop/sample_pdf.txt"))
-    try {
-      stripper.setStartPage(89)
-      stripper.setEndPage(96)
+      val writer = Files.newBufferedWriter(Paths.get("/Users/nasb/Desktop/sample_pdf.txt"))
+      try {
+        stripper.setStartPage(89)
+        stripper.setEndPage(96)
 
-//      println(stripper.getText(pdDoc))
-      val list = formatStrings3(stripper.getText(pdDoc).split("\n").toList)
-      println(list)
-//      println(list.size)
+        //      println(stripper.getText(pdDoc))
+        val list = formatStrings3(stripper.getText(pdDoc).split("\n").toList)
+        println(list)
+        //      println(list.size)
 
-      list.foreach(s => {
-        writer.write(s)
-        writer.newLine()
-      })
-      //      writer.flush()
-      //      //      stripper.writeText(pdDoc, writer)
-    } finally {
-      writer.close()
-      pdDoc.close()
+        list.foreach(s => {
+          writer.write(s)
+          writer.newLine()
+        })
+        //      writer.flush()
+        //      //      stripper.writeText(pdDoc, writer)
+      } finally {
+        writer.close()
+        pdDoc.close()
+      }
     }
+
+    val f = SubjectsRepository.getAll()
+//    Await.ready(f, Duration.Inf)
+//    f.foreach(println)
+    val res = Await.result(f, Duration.Inf)
+    res.foreach(println)
+//    SubjectsRepository.getAll().onComplete {
+//      case Success(list) => println(list)
+//      case Failure(e) => println(e)
+//    }
+//    Thread.sleep(1000)
 
 //    val lines = Files.lines(Paths.get("/Users/test_user/Desktop/test.txt")).iterator().asScala.toList
 //    println(formatStrings(lines).mkString("\n"))
