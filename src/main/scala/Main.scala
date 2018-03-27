@@ -120,7 +120,6 @@ object Main extends App {
     val lines = Files.lines(Paths.get("/Users/test_user/Desktop/test.txt")).iterator().asScala.toList
     lines
       .filter(!_.startsWith("授業科目の名称"))
-      .filter(!_.startsWith("授業科目の名称"))
       .map(s => s.split(",").toList)
       .foreach(list => {
         val category: Option[Int] = Some(0)
