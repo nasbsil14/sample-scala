@@ -119,35 +119,41 @@ object Main extends App {
   def importData(): Unit = {
     val lines = Files.lines(Paths.get("/Users/test_user/Desktop/test.txt")).iterator().asScala.toList
     lines
+      .filter(!_.startsWith("授業科目の名称"))
+      .filter(!_.startsWith("授業科目の名称"))
       .map(s => s.split(",").toList)
       .foreach(list => {
-        val class1: Option[Int] = if (!list(0).isEmpty) Some(list(0).toInt) else None
-        val class2: Option[Int] = if (!list(1).isEmpty) Some(list(1).toInt) else None
-        val class3: Option[Int] = if (!list(2).isEmpty) Some(list(2).toInt) else None
-        val title: String = list(3)
-        val schoolYear: Int = list(4).toInt
+        val category: Option[Int] = Some(0)
+        val title: String = list(0)
+        val schoolYear: Int = list(1).toInt
 
-        val units: Int = list(6).toInt
-        val memo: String = list.splitAt(7)._2.mkString
+        val units: Int = list(3).toInt
+        val memo: String = list.splitAt(4)._2.mkString(",")
 
         val rgTerm1 = """(.+)・(.+)""".r
         val rgTerm2 = """(.+)～(.+)""".r
-        list(5).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
+        list(2).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
           case rgTerm1(v1, v2) => {
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v1.toInt, units, memo
+            SubjectsRepository.create(new Subjects(None, category, title, schoolYear, v1.toInt, units, memo
               , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, v2.toInt, units, memo
+            SubjectsRepository.create(new Subjects(None, category, title, schoolYear, v2.toInt, units, memo
               , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
           }
           case rgTerm2(v1, v2) => {
-            (v1.toInt to v2.toInt).foreach(i => {
-              SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, i, units, memo
+            (v1.toInt to v2.toInt).foreach(term => {
+              SubjectsRepository.create(new Subjects(None, category, title, schoolYear, term, units, memo
+                , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
+            })
+          }
+          case "通" => {
+            (1 to 4).foreach(term => {
+              SubjectsRepository.create(new Subjects(None, category, title, schoolYear, term, units, memo
                 , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
             })
           }
           case v => {
             val term: Int = v.toInt
-            SubjectsRepository.create(new Subjects(None, class1, class2, class3, title, schoolYear, term, units, memo
+            SubjectsRepository.create(new Subjects(None, category, title, schoolYear, term, units, memo
               , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
           }
         }
