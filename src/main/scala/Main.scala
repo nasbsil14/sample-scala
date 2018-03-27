@@ -123,15 +123,15 @@ object Main extends App {
       .map(s => s.split(",").toList)
       .foreach(list => {
         val category: Option[Int] = Some(0)
-        val title: String = list(0)
-        val schoolYear: Int = list(1).toInt
+        val title: String = list(1)
+        val schoolYear: Int = list(2).toInt
 
-        val units: Int = list(3).toInt
-        val memo: String = list.splitAt(4)._2.mkString(",")
+        val units: Int = list(4).toInt
+        val memo: String = list.splitAt(5)._2.mkString(",")
 
         val rgTerm1 = """(.+)・(.+)""".r
         val rgTerm2 = """(.+)～(.+)""".r
-        list(2).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
+        list(3).replace("①", "1").replace("②", "2").replace("③", "3").replace("④", "4") match {
           case rgTerm1(v1, v2) => {
             SubjectsRepository.create(new Subjects(None, category, title, schoolYear, v1.toInt, units, memo
               , 0, Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf(LocalDateTime.now())))
