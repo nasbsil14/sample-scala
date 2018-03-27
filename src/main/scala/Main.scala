@@ -122,7 +122,7 @@ object Main extends App {
       .filter(!_.startsWith("授業科目の名称"))
       .map(s => s.split(",").toList)
       .foreach(list => {
-        val category: Option[Int] = Some(0)
+        val category: Option[Int] = if (!list(0).isEmpty) Some(list(0).toInt) else None
         val title: String = list(1)
         val schoolYear: Int = list(2).toInt
 
