@@ -4,7 +4,9 @@ import java.sql.Timestamp
 
 case class Subjects(
                   id: Option[Int] = None,
-                  category: Option[Int],
+                  class1: Option[Int],
+                  class2: Option[Int],
+                  class3: Option[Int],
                   title: String,
                   schoolYear: Int,
                   term: Int,

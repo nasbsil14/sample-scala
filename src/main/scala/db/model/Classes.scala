@@ -2,7 +2,7 @@ package db.model
 
 import java.sql.Timestamp
 
-case class Category(
+case class Classes(
                   id: Option[Int] = None,
                   no: Int,
                   title: String,

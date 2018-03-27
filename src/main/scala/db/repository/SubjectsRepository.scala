@@ -49,7 +49,9 @@ private[repository] trait SubjectsTable { this: DbAdapter =>
   private[SubjectsTable] class SubjectsTable(tag: Tag) extends Table[Subjects](tag, "Subjects") {
     val id = column[Int]("Id", O.PrimaryKey, O.AutoInc)
 
-    val category = column[Int]("Category")
+    val class1 = column[Int]("Class1")
+    val class2 = column[Int]("Class2")
+    val class3 = column[Int]("Class3")
     val title = column[String]("Title")
     val schoolYear = column[Int]("SchoolYear")
     val term = column[Int]("Term")
@@ -59,7 +61,7 @@ private[repository] trait SubjectsTable { this: DbAdapter =>
     val registerDate = column[Timestamp]("RegisterDate", SqlType("timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"))
     val editDate = column[Timestamp]("EditDate", SqlType("timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP"))
 
-    def * = (id.?, category.?, title, schoolYear, term, units, memo, status, registerDate, editDate) <> (Subjects.tupled, Subjects.unapply)
+    def * = (id.?, class1.?, class2.?, class3.?, title, schoolYear, term, units, memo, status, registerDate, editDate) <> (Subjects.tupled, Subjects.unapply)
   }
 
   protected val SubjectsTableQuery = TableQuery[SubjectsTable]
